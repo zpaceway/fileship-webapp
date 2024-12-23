@@ -4,8 +4,8 @@ import { HiLink } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa6";
 import { TbReload } from "react-icons/tb";
 import { MdEdit, MdCreateNewFolder, MdDelete } from "react-icons/md";
-import ActionModal from "../components/ActionModal";
-import SettingsModal from "../components/SettingsModal";
+import ActionModal from "./ActionModal";
+import SettingsModal from "./SettingsModal";
 import { FileshipRequestor } from "../api";
 import useSettings from "../hooks/useSettings";
 import useNavigation from "../hooks/useNavigation";
@@ -15,8 +15,10 @@ import { toast } from "react-toastify";
 import { nodesAtom } from "../atoms";
 import { useParams } from "react-router";
 import { API_BASE_URL } from "../constants";
+import Button from "./Button";
+import { twMerge } from "tailwind-merge";
 
-const LeftToolbar = () => {
+const Toolbar = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
   const { currentPathId: currentPathId, navigate } = useNavigation();
@@ -33,9 +35,9 @@ const LeftToolbar = () => {
   if (!bucketId) return <></>;
 
   return (
-    <div className="flex h-full shrink-0 flex-col border-r border-r-zinc-500 bg-zinc-700 text-xl">
-      <button
-        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+    <div className="flex shrink-0 border-r border-blue-300/50 text-xl">
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           if (!currentPathId) return;
           setNodes([]);
@@ -44,15 +46,15 @@ const LeftToolbar = () => {
         }}
       >
         <FaHome />
-      </button>
-      <button
-        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+      </Button>
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setNodes([]);
         }}
       >
         <TbReload />
-      </button>
+      </Button>
       <input
         id="file-uploader"
         type="file"
@@ -75,16 +77,16 @@ const LeftToolbar = () => {
           });
         }}
       />
-      <button
-        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           document.querySelector<HTMLInputElement>("#file-uploader")?.click();
         }}
       >
         <FaPlus />
-      </button>
-      <button
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all ${selectedNodes.length !== 1 || !selectedNodes[0]?.url ? "opacity-50" : "hover:bg-zinc-500"}`}
+      </Button>
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         disabled={selectedNodes.length !== 1 || !selectedNodes[0]?.url}
         onClick={() => {
           navigator.clipboard.writeText(
@@ -94,9 +96,9 @@ const LeftToolbar = () => {
         }}
       >
         <HiLink />
-      </button>
-      <button
-        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+      </Button>
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
             bucketId,
@@ -106,19 +108,22 @@ const LeftToolbar = () => {
         }}
       >
         <MdCreateNewFolder />
-      </button>
+      </Button>
 
-      <button
-        className={`flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 px-2 text-nowrap text-white transition-all ${editMode ? "bg-zinc-800" : "bg-zinc-600 hover:bg-zinc-500"}`}
+      <Button
+        className={twMerge(
+          "flex h-9 w-9 items-center justify-center border-r border-blue-300/50",
+          editMode && "bg-blue-600",
+        )}
         onClick={() => {
           setEditMode((state) => !state);
         }}
       >
         <MdEdit />
-      </button>
-      <button
+      </Button>
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         disabled={selectedNodes.length === 0}
-        className={`relative flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-rose-500 px-2 text-nowrap text-white transition-all ${selectedNodes.length > 0 ? "hover:bg-rose-400" : "opacity-50"}`}
         onClick={() => {
           setModal(
             <ActionModal
@@ -144,9 +149,9 @@ const LeftToolbar = () => {
             {selectedNodes.length}
           </div>
         )}
-      </button>
-      <button
-        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+      </Button>
+      <Button
+        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setModal(
             <SettingsModal
@@ -161,9 +166,9 @@ const LeftToolbar = () => {
         }}
       >
         <IoSettings />
-      </button>
+      </Button>
     </div>
   );
 };
 
-export default LeftToolbar;
+export default Toolbar;

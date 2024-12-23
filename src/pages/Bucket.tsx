@@ -10,11 +10,11 @@ import { FileshipRequestor } from "../api";
 import useNavigation from "../hooks/useNavigation";
 import useNodes from "../hooks/useNodes";
 import useFileship from "../hooks/useFileship";
-import LeftToolbar from "../components/LeftToolbar";
+import Toolbar from "../components/Toolbar";
 import { API_BASE_URL, CONNECTORS } from "../constants";
 import { useParams } from "react-router";
 
-const DashboardPage = () => {
+const BucketPage = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const [isHoveringOver, setIsHoveringOver] = useState(false);
   const { currentPathId, prevPathId, pathIdsString, navigate } =
@@ -42,19 +42,9 @@ const DashboardPage = () => {
   if (!bucketId) return <></>;
 
   return (
-    <div className="fixed inset-0 flex h-full w-full overflow-hidden bg-zinc-100">
+    <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-zinc-100">
       {modal}
-
-      <LeftToolbar />
       <div className="flex h-full w-full flex-col overflow-hidden">
-        <div className="flex h-9 w-full items-center bg-zinc-700 p-1.5">
-          <input
-            type="text"
-            className="h-full w-full shrink-0 rounded-full bg-transparent px-4 text-xs text-zinc-300"
-            disabled
-            value={pathname}
-          />
-        </div>
         <div
           className="relative flex h-full flex-col overflow-hidden"
           onDragOver={(e) => {
@@ -127,7 +117,7 @@ const DashboardPage = () => {
             <table className="w-full">
               <thead className="relative z-50 shadow">
                 <tr>
-                  <th className="sticky top-0 h-9 w-4 border-r border-r-blue-300 bg-blue-400 px-6 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-4 border-r border-r-blue-300 bg-blue-500 px-6 text-left text-xs font-medium text-white">
                     <input
                       type="checkbox"
                       checked={selectedNodes.length > 0}
@@ -139,22 +129,22 @@ const DashboardPage = () => {
                       }}
                     />
                   </th>
-                  <th className="sticky top-0 h-9 min-w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 min-w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Name
                   </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Size
                   </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Created
                   </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Updated
                   </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Connectors
                   </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-400 px-4 text-left text-xs font-medium text-white">
+                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
                     Uploaded
                   </th>
                 </tr>
@@ -341,9 +331,22 @@ const DashboardPage = () => {
             </table>
           </div>
         </div>
+        <div className="flex h-9 w-full items-center bg-zinc-800 p-1.5">
+          <input
+            type="text"
+            className="h-full w-full shrink-0 rounded-full bg-transparent px-4 text-xs text-white"
+            disabled
+            value={pathname}
+          />
+        </div>
+      </div>
+      <div className="fixed inset-x-0 bottom-8 flex items-center justify-center p-2">
+        <div className="overflow-hidden rounded-full">
+          <Toolbar />
+        </div>
       </div>
     </div>
   );
 };
 
-export default DashboardPage;
+export default BucketPage;
