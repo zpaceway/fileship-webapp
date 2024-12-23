@@ -28,7 +28,7 @@ const SettingsModal = ({
           <div className="text-sm">
             <label className="p-1 text-xs">Connector:</label>
             <select
-              className="h-9 w-full border px-2 text-sm outline-none"
+              className="h-9 w-full border border-zinc-300 px-2 text-sm outline-none"
               defaultValue={connector}
               onChange={(e) => {
                 setConnector(e.target.value as TConnector);

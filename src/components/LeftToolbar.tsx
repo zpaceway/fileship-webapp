@@ -35,7 +35,7 @@ const LeftToolbar = () => {
   return (
     <div className="flex h-full shrink-0 flex-col border-r border-r-zinc-500 bg-zinc-700 text-xl">
       <button
-        className="flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
         onClick={async () => {
           if (!currentPathId) return;
           setNodes([]);
@@ -46,7 +46,7 @@ const LeftToolbar = () => {
         <FaHome />
       </button>
       <button
-        className="flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
         onClick={() => {
           setNodes([]);
         }}
@@ -76,7 +76,7 @@ const LeftToolbar = () => {
         }}
       />
       <button
-        className="flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
         onClick={() => {
           document.querySelector<HTMLInputElement>("#file-uploader")?.click();
         }}
@@ -84,7 +84,7 @@ const LeftToolbar = () => {
         <FaPlus />
       </button>
       <button
-        className={`flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all ${selectedNodes.length !== 1 || !selectedNodes[0]?.url ? "opacity-50" : "hover:bg-zinc-500"}`}
+        className={`flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all ${selectedNodes.length !== 1 || !selectedNodes[0]?.url ? "opacity-50" : "hover:bg-zinc-500"}`}
         disabled={selectedNodes.length !== 1 || !selectedNodes[0]?.url}
         onClick={() => {
           navigator.clipboard.writeText(
@@ -96,7 +96,7 @@ const LeftToolbar = () => {
         <HiLink />
       </button>
       <button
-        className="flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
             bucketId,
@@ -109,7 +109,7 @@ const LeftToolbar = () => {
       </button>
 
       <button
-        className={`flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 px-2 text-nowrap text-white transition-all ${editMode ? "bg-zinc-800" : "bg-zinc-600 hover:bg-zinc-500"}`}
+        className={`flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 px-2 text-nowrap text-white transition-all ${editMode ? "bg-zinc-800" : "bg-zinc-600 hover:bg-zinc-500"}`}
         onClick={() => {
           setEditMode((state) => !state);
         }}
@@ -118,7 +118,7 @@ const LeftToolbar = () => {
       </button>
       <button
         disabled={selectedNodes.length === 0}
-        className={`relative flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-rose-500 px-2 text-nowrap text-white transition-all ${selectedNodes.length > 0 ? "hover:bg-rose-400" : "opacity-50"}`}
+        className={`relative flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-rose-500 px-2 text-nowrap text-white transition-all ${selectedNodes.length > 0 ? "hover:bg-rose-400" : "opacity-50"}`}
         onClick={() => {
           setModal(
             <ActionModal
@@ -146,7 +146,7 @@ const LeftToolbar = () => {
         )}
       </button>
       <button
-        className="flex h-9 w-9 items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
+        className="flex h-9 w-9 cursor-pointer items-center justify-center border-b border-b-zinc-500 bg-zinc-600 px-2 text-nowrap text-white transition-all hover:bg-zinc-500"
         onClick={() => {
           setModal(
             <SettingsModal

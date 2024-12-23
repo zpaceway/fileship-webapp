@@ -117,7 +117,7 @@ const DashboardPage = () => {
           }}
         >
           {isHoveringOver && (
-            <div className="bg-opacity-70 pointer-events-none absolute inset-0 z-50 flex h-full w-full items-center justify-center bg-white text-2xl text-zinc-400">
+            <div className="pointer-events-none absolute inset-0 z-50 flex h-full w-full items-center justify-center bg-white/70 text-2xl text-zinc-400">
               <div className="flex flex-col items-center justify-center gap-2 backdrop-blur-lg">
                 <div>Drop your files here...</div>
               </div>
@@ -162,7 +162,7 @@ const DashboardPage = () => {
               <tbody className="h-full w-full">
                 {prevPathId !== undefined && (
                   <tr
-                    className={`"bg-zinc-50" : "bg-zinc-100" hover:bg-opacity-50 text-xs text-nowrap transition-all hover:bg-blue-100`}
+                    className={`"bg-zinc-50" : "bg-zinc-100 text-xs text-nowrap transition-all hover:bg-blue-100/50`}
                   >
                     <td className="h-9"></td>
                     <td
@@ -194,7 +194,7 @@ const DashboardPage = () => {
                   return (
                     <tr
                       key={`${currentPathId}-${node.id}`}
-                      className={`hover:bg-opacity-50 text-xs text-nowrap transition-all select-none hover:bg-blue-100 ${isSelected ? "bg-blue-100" : index % 2 === 0 ? "bg-zinc-50" : "bg-zinc-100"}`}
+                      className={`text-xs text-nowrap transition-all select-none hover:bg-blue-100/50 ${isSelected ? "bg-blue-100" : index % 2 === 0 ? "bg-zinc-50" : "bg-zinc-100"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {

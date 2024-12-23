@@ -42,7 +42,7 @@ const HomePage = () => {
               <div className="fixed inset-0 z-40 bg-black/10"></div>
               <div className="absolute top-[calc(100%_+_4px)] right-0 z-50 border border-zinc-200 text-sm shadow">
                 <button
-                  className="opa cursor-pointer bg-white p-2"
+                  className="cursor-pointer bg-white p-2"
                   onClick={(e) => {
                     e.stopPropagation();
                     signOut();
