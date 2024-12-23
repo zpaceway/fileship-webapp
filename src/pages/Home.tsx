@@ -74,9 +74,9 @@ const HomePage = () => {
           You have no buckets. Create one to get started.
         </div>
       ) : (
-        <div className="overflow-hidden">
+        <div className="overflow-auto">
           <div
-            className="grid h-full w-full flex-wrap gap-2 overflow-auto p-4 pt-0"
+            className="grid w-full flex-wrap gap-2 p-4 pt-0"
             style={{
               gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
             }}
@@ -84,7 +84,7 @@ const HomePage = () => {
             {buckets.map((bucket) => (
               <div
                 key={bucket.id}
-                className="cursor-pointer overflow-hidden border border-zinc-200 bg-white text-white shadow"
+                className="flex h-full cursor-pointer flex-col overflow-hidden border border-zinc-200 bg-white text-white shadow"
               >
                 <div className="flex items-center justify-end bg-blue-300 text-white">
                   <div
