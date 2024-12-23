@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { FaDiscord, FaServer, FaTelegram } from "react-icons/fa";
 
-export const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
+export const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || "/api";
 
 export const CONNECTORS = [
   {
