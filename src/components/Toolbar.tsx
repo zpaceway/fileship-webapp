@@ -37,6 +37,7 @@ const Toolbar = () => {
   return (
     <div className="flex shrink-0 border-r border-blue-300/50 text-xl">
       <Button
+        disabled={editMode}
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           if (!currentPathId) return;
@@ -48,6 +49,7 @@ const Toolbar = () => {
         <FaHome />
       </Button>
       <Button
+        disabled={editMode}
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setNodes([]);
@@ -78,6 +80,7 @@ const Toolbar = () => {
         }}
       />
       <Button
+        disabled={editMode}
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           document.querySelector<HTMLInputElement>("#file-uploader")?.click();
@@ -87,7 +90,9 @@ const Toolbar = () => {
       </Button>
       <Button
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
-        disabled={selectedNodes.length !== 1 || !selectedNodes[0]?.url}
+        disabled={
+          editMode || selectedNodes.length !== 1 || !selectedNodes[0]?.url
+        }
         onClick={() => {
           navigator.clipboard.writeText(
             `${API_BASE_URL}/${selectedNodes[0]?.url}`,
@@ -98,6 +103,7 @@ const Toolbar = () => {
         <HiLink />
       </Button>
       <Button
+        disabled={editMode}
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
@@ -124,7 +130,7 @@ const Toolbar = () => {
       <Button
         variant="error"
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
-        disabled={selectedNodes.length === 0}
+        disabled={editMode || selectedNodes.length === 0}
         onClick={() => {
           setModal(
             <ActionModal
@@ -152,6 +158,7 @@ const Toolbar = () => {
         )}
       </Button>
       <Button
+        disabled={editMode}
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setModal(
