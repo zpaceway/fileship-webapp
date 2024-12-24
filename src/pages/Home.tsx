@@ -25,7 +25,7 @@ const HomePage = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-blue-50">
-      <div className="flex h-12 w-full shrink-0 grow-0 items-center justify-between bg-blue-500 px-4 shadow">
+      <div className="flex h-12 w-full shrink-0 grow-0 items-center justify-between border-b border-b-zinc-200 bg-blue-500 px-4">
         <div></div>
         <div
           className="relative flex items-center gap-2"

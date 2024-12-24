@@ -44,7 +44,7 @@ const BucketPage = () => {
     <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-white">
       {modal}
       <div className="flex h-full w-full flex-col overflow-hidden">
-        <div className="flex h-12 w-full items-center bg-blue-500 p-1.5">
+        <div className="flex h-12 w-full shrink-0 items-center border-b border-b-zinc-200 bg-blue-500">
           <input
             type="text"
             className="h-full w-full shrink-0 rounded-full bg-transparent px-4 text-sm text-white"
@@ -124,16 +124,17 @@ const BucketPage = () => {
             <table className="w-full">
               <tbody className="h-full w-full">
                 {prevPathId !== undefined && (
-                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-violet-50">
-                    <td className="w-10"></td>
+                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-yellow-50">
+                    <td className="h-12 w-10"></td>
                     <td
+                      className="h-12"
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           window.history.back();
                         }
                       }}
                     >
-                      <div className="flex h-12 w-full items-center gap-1 select-none">
+                      <div className="flex h-12 w-full shrink-0 grow-0 items-center gap-1 select-none">
                         <FaFolder className="text-yellow-500" />
                         <div>..</div>
                       </div>
@@ -148,7 +149,7 @@ const BucketPage = () => {
                   return (
                     <tr
                       key={`${currentPathId}-${node.id}`}
-                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-violet-50 ${isSelected ? "bg-violet-50" : index % 2 === 0 ? "bg-blue-50" : "bg-white"}`}
+                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-yellow-50 ${isSelected ? "bg-yellow-50" : index % 2 === 0 ? "bg-blue-50" : "bg-white"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {
