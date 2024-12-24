@@ -122,6 +122,7 @@ const Toolbar = () => {
         <MdEdit />
       </Button>
       <Button
+        variant="error"
         className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         disabled={selectedNodes.length === 0}
         onClick={() => {
@@ -145,7 +146,7 @@ const Toolbar = () => {
       >
         <MdDelete />
         {selectedNodes.length > 0 && (
-          <div className="absolute top-4 right-0.5 flex aspect-square text-[8px] font-bold">
+          <div className="absolute -top-0.25 right-0.5 flex aspect-square text-[9px] font-bold">
             {selectedNodes.length}
           </div>
         )}

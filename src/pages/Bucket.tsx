@@ -42,7 +42,7 @@ const BucketPage = () => {
   if (!bucketId) return <></>;
 
   return (
-    <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-zinc-100">
+    <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-blue-50">
       {modal}
       <div className="flex h-full w-full flex-col overflow-hidden">
         <div
@@ -151,9 +151,7 @@ const BucketPage = () => {
               </thead>
               <tbody className="h-full w-full">
                 {prevPathId !== undefined && (
-                  <tr
-                    className={`"bg-zinc-50" : "bg-zinc-100 text-xs text-nowrap transition-all hover:bg-blue-100/50`}
-                  >
+                  <tr className="bg-blue-50 text-xs text-nowrap transition-all hover:bg-blue-200">
                     <td className="h-9"></td>
                     <td
                       className="h-9 w-full px-4"
@@ -184,7 +182,7 @@ const BucketPage = () => {
                   return (
                     <tr
                       key={`${currentPathId}-${node.id}`}
-                      className={`text-xs text-nowrap transition-all select-none hover:bg-blue-100/50 ${isSelected ? "bg-blue-100" : index % 2 === 0 ? "bg-zinc-50" : "bg-zinc-100"}`}
+                      className={`text-xs text-nowrap transition-all select-none hover:bg-blue-200 ${isSelected ? "bg-blue-200" : index % 2 === 0 ? "bg-blue-50" : "bg-blue-100"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {
