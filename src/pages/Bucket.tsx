@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { IoDocumentText } from "react-icons/io5";
 import { BiSolidFilePdf } from "react-icons/bi";
 import { SiGoogleslides, SiGooglesheets } from "react-icons/si";
-import { FaFile, FaFolder, FaCheckCircle } from "react-icons/fa";
-import { ImCross } from "react-icons/im";
+import { FaFile, FaFolder } from "react-icons/fa";
 import { Debouncer, formatBytes, getAllFilesFromDrop } from "../utils";
-import { CgSpinner } from "react-icons/cg";
 import { FileshipRequestor } from "../api";
 import useNavigation from "../hooks/useNavigation";
 import useNodes from "../hooks/useNodes";
@@ -13,6 +11,7 @@ import useFileship from "../hooks/useFileship";
 import Toolbar from "../components/Toolbar";
 import { API_BASE_URL, CONNECTORS } from "../constants";
 import { useParams } from "react-router";
+import { twMerge } from "tailwind-merge";
 
 const BucketPage = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
@@ -42,9 +41,17 @@ const BucketPage = () => {
   if (!bucketId) return <></>;
 
   return (
-    <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-blue-50">
+    <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-white">
       {modal}
       <div className="flex h-full w-full flex-col overflow-hidden">
+        <div className="flex h-12 w-full items-center bg-blue-500 p-1.5">
+          <input
+            type="text"
+            className="h-full w-full shrink-0 rounded-full bg-transparent px-4 text-sm text-white"
+            disabled
+            value={pathname}
+          />
+        </div>
         <div
           className="relative flex h-full flex-col overflow-hidden"
           onDragOver={(e) => {
@@ -115,63 +122,22 @@ const BucketPage = () => {
           )}
           <div className="h-full w-full overflow-auto">
             <table className="w-full">
-              <thead className="relative z-50 shadow">
-                <tr>
-                  <th className="sticky top-0 h-9 w-4 border-r border-r-blue-300 bg-blue-500 px-6 text-left text-xs font-medium text-white">
-                    <input
-                      type="checkbox"
-                      checked={selectedNodes.length > 0}
-                      onChange={() => {
-                        if (selectedNodes.length > 0)
-                          return setSelectedNodes([]);
-
-                        setSelectedNodes(nodes);
-                      }}
-                    />
-                  </th>
-                  <th className="sticky top-0 h-9 min-w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Name
-                  </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Size
-                  </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Created
-                  </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Updated
-                  </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Connectors
-                  </th>
-                  <th className="sticky top-0 h-9 w-40 border-r border-r-blue-300 bg-blue-500 px-4 text-left text-xs font-medium text-white">
-                    Uploaded
-                  </th>
-                </tr>
-              </thead>
               <tbody className="h-full w-full">
                 {prevPathId !== undefined && (
-                  <tr className="bg-blue-50 text-xs text-nowrap transition-all hover:bg-blue-200">
-                    <td className="h-9"></td>
+                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-violet-50">
+                    <td className="w-10"></td>
                     <td
-                      className="h-9 w-full px-4"
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           window.history.back();
                         }
                       }}
                     >
-                      <div className="flex items-center gap-1 select-none">
+                      <div className="flex h-12 w-full items-center gap-1 select-none">
                         <FaFolder className="text-yellow-500" />
                         <div>..</div>
                       </div>
                     </td>
-                    <td className="h-9 w-40"></td>
-                    <td className="h-9 w-40"></td>
-                    <td className="h-9 w-40"></td>
-                    <td className="h-9 w-40"></td>
-                    <td className="h-9 w-40"></td>
-                    <td className="h-9 w-40"></td>
                   </tr>
                 )}
                 {nodes.map((node, index) => {
@@ -182,7 +148,7 @@ const BucketPage = () => {
                   return (
                     <tr
                       key={`${currentPathId}-${node.id}`}
-                      className={`text-xs text-nowrap transition-all select-none hover:bg-blue-200 ${isSelected ? "bg-blue-200" : index % 2 === 0 ? "bg-blue-50" : "bg-blue-100"}`}
+                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-violet-50 ${isSelected ? "bg-violet-50" : index % 2 === 0 ? "bg-blue-50" : "bg-white"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {
@@ -201,7 +167,7 @@ const BucketPage = () => {
                       }}
                     >
                       <td
-                        className="h-9 px-6 py-1"
+                        className="flex h-12 w-10 items-center justify-center"
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
@@ -221,8 +187,9 @@ const BucketPage = () => {
                           }}
                         />
                       </td>
-                      <td className="h-9 w-full px-4">
-                        <div className="flex h-full items-center gap-1">
+
+                      <td className="h-12 w-full pr-4">
+                        <div className="flex h-full w-full items-center gap-1">
                           <div>
                             {node.children ? (
                               <FaFolder className="text-yellow-500" />
@@ -246,81 +213,95 @@ const BucketPage = () => {
                               <FaFile className="text-zinc-300" />
                             )}
                           </div>
-                          <div className="relative flex h-full w-full items-center">
-                            <div
-                              className={`w-full ${editMode ? "opacity-0" : "opacity-100"}`}
-                            >
-                              {node.name}
-                            </div>
-                            {editMode && (
-                              <input
-                                type="text"
-                                className="absolute inset-0 h-full w-full shrink-0 bg-transparent outline-none"
-                                defaultValue={node.name}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                }}
-                                onChange={(e) => {
-                                  editModeDebouncerRef.current.exec(() => {
-                                    FileshipRequestor.updateNode(
-                                      bucketId,
-                                      node.id,
-                                      e.target.value,
-                                      currentPathId,
+                          <div className="flex h-full w-full">
+                            <div className="flex w-full items-center">
+                              <div className="flex flex-col">
+                                <div className="text-sm text-zinc-900">
+                                  <div className="relative w-full">
+                                    {editMode && (
+                                      <input
+                                        type="text"
+                                        className="absolute inset-0 h-full w-full shrink-0 bg-transparent p-0 outline-none"
+                                        defaultValue={node.name}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                        }}
+                                        onChange={(e) => {
+                                          editModeDebouncerRef.current.exec(
+                                            () => {
+                                              FileshipRequestor.updateNode(
+                                                bucketId,
+                                                node.id,
+                                                e.target.value,
+                                                currentPathId,
+                                              );
+                                            },
+                                          );
+                                        }}
+                                      />
+                                    )}
+                                    <div
+                                      className={
+                                        editMode
+                                          ? "pointer-events-none opacity-0"
+                                          : "opacity-100"
+                                      }
+                                    >
+                                      {node.name}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center text-xs">
+                                  <span className="text-zinc-400">
+                                    {new Date(node.updatedAt).toLocaleString()}
+                                  </span>
+                                  <span className="inline-block w-2"></span>
+                                  <span className="text-zinc-500">
+                                    {formatBytes(node.size)}{" "}
+                                  </span>
+                                  {node.chunks && node.uploaded !== 100 && (
+                                    <span>
+                                      <span className="inline-block w-2"></span>
+                                      <span
+                                        className={twMerge(
+                                          "rounded-full text-white",
+                                          node.uploaded === 100
+                                            ? "bg-emerald-500"
+                                            : nodeIdsBeingUpdated.has(node.id)
+                                              ? "text-blue-500"
+                                              : "text-rose-400",
+                                        )}
+                                      >
+                                        {node.uploaded.toFixed(1)}%
+                                      </span>
+                                    </span>
+                                  )}
+                                  {[
+                                    ...new Set(
+                                      node.chunks?.map((chunk) => {
+                                        return chunk.connector;
+                                      }),
+                                    ),
+                                  ].map((connector) => {
+                                    const connectorIcon = CONNECTORS.find(
+                                      (_connector) =>
+                                        _connector.key === connector,
+                                    )?.icon;
+
+                                    return (
+                                      <div
+                                        className="ml-2 inline-block"
+                                        key={`${node.id}-connector-${connector}`}
+                                      >
+                                        {connectorIcon}
+                                      </div>
                                     );
-                                  });
-                                }}
-                              />
-                            )}
+                                  })}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </td>
-                      <td className="h-9 px-4 py-1">
-                        {formatBytes(node.size)}
-                      </td>
-                      <td className="h-9 px-4 py-1">
-                        {new Date(node.createdAt).toLocaleString()}
-                      </td>
-                      <td className="h-9 px-4 py-1">
-                        {new Date(node.updatedAt).toLocaleString()}
-                      </td>
-                      <td className="h-9 px-4 py-1">
-                        {[
-                          ...new Set(
-                            node.chunks?.map((chunk) => {
-                              return chunk.connector;
-                            }),
-                          ),
-                        ].map((connector) => {
-                          const connectorIcon = CONNECTORS.find(
-                            (_connector) => _connector.key === connector,
-                          )?.icon;
-
-                          return (
-                            <div key={`${node.id}-connector-${connector}`}>
-                              {connectorIcon}
-                            </div>
-                          );
-                        })}
-                      </td>
-                      <td className="h-9 px-4 py-1">
-                        {node.chunks && (
-                          <div className="flex items-center gap-2">
-                            <div className="text-base">
-                              {node.uploaded === 100 ? (
-                                <FaCheckCircle className="text-emerald-500" />
-                              ) : nodeIdsBeingUpdated.has(node.id) ? (
-                                <CgSpinner className="animate-spin text-blue-500" />
-                              ) : (
-                                <ImCross className="text-rose-500" />
-                              )}
-                            </div>
-                            <div>
-                              {node.uploaded !== undefined &&
-                                `${node.uploaded.toFixed(1)}%`}
-                            </div>
-                          </div>
-                        )}
                       </td>
                     </tr>
                   );
@@ -329,16 +310,8 @@ const BucketPage = () => {
             </table>
           </div>
         </div>
-        <div className="flex h-9 w-full items-center bg-zinc-800 p-1.5">
-          <input
-            type="text"
-            className="h-full w-full shrink-0 rounded-full bg-transparent px-4 text-xs text-white"
-            disabled
-            value={pathname}
-          />
-        </div>
       </div>
-      <div className="fixed inset-x-0 bottom-8 flex items-center justify-center p-2">
+      <div className="fixed inset-x-0 bottom-2 flex items-center justify-center p-2">
         <div className="overflow-hidden rounded-full">
           <Toolbar />
         </div>

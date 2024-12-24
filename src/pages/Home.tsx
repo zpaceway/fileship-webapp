@@ -25,15 +25,15 @@ const HomePage = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-blue-50">
-      <div className="flex h-9 w-full shrink-0 grow-0 items-center justify-between bg-blue-500 px-4 shadow">
+      <div className="flex h-12 w-full shrink-0 grow-0 items-center justify-between bg-blue-500 px-4 shadow">
         <div></div>
         <div
           className="relative flex items-center gap-2"
           onClick={() => setUserTooltipOpen(!userTooltipOpen)}
         >
-          <div className="flex cursor-pointer items-center gap-1">
-            <div className="text-xs font-medium text-white">{user.email}</div>
-            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-500 text-xs font-medium text-white">
+          <div className="flex cursor-pointer items-center gap-2">
+            <div className="text-sm text-white">{user.email}</div>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-800 font-medium text-white">
               {user.email[0].toUpperCase()}
             </div>
           </div>

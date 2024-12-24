@@ -1,5 +1,5 @@
-import { IoSettings } from "react-icons/io5";
-import { FaHome } from "react-icons/fa";
+import { IoCheckboxSharp, IoSettings } from "react-icons/io5";
+import { FaCheckDouble, FaHome } from "react-icons/fa";
 import { HiLink } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa6";
 import { TbReload } from "react-icons/tb";
@@ -30,7 +30,7 @@ const Toolbar = () => {
     setEditMode,
     setModal,
   } = useFileship();
-  const [, setNodes] = useAtom(nodesAtom);
+  const [nodes, setNodes] = useAtom(nodesAtom);
 
   if (!bucketId) return <></>;
 
@@ -117,6 +117,20 @@ const Toolbar = () => {
       </Button>
 
       <Button
+        disabled={editMode}
+        className={twMerge(
+          "flex h-9 w-9 items-center justify-center border-r border-blue-300/50",
+          selectedNodes.length > 0 && "bg-blue-700 hover:bg-blue-700",
+        )}
+        onClick={() => {
+          if (selectedNodes.length > 0) return setSelectedNodes([]);
+
+          setSelectedNodes(nodes);
+        }}
+      >
+        <IoCheckboxSharp />
+      </Button>
+      <Button
         className={twMerge(
           "flex h-9 w-9 items-center justify-center border-r border-blue-300/50",
           editMode && "bg-blue-600",
@@ -152,7 +166,7 @@ const Toolbar = () => {
       >
         <MdDelete />
         {selectedNodes.length > 0 && (
-          <div className="absolute -top-0.25 right-0.5 flex aspect-square text-[9px] font-bold">
+          <div className="absolute right-0.5 bottom-0 flex text-[9px] font-bold">
             {selectedNodes.length}
           </div>
         )}

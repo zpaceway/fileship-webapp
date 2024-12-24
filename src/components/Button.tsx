@@ -25,7 +25,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           disabled={disabled || isLoading}
           ref={ref}
           className={twMerge(
-            "relative w-full px-4 py-2 text-white transition-all",
+            "relative h-10 w-full px-4 text-white transition-all",
             buttonVariantColorMapping[variant],
             disabled || isLoading ? "opacity-50" : "cursor-pointer",
             className,
@@ -36,7 +36,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {children}
           </div>
           {isLoading && (
-            <div className="h-h-full absolute inset-0 flex w-full items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <CgSpinner className="animate-spin" />
             </div>
           )}
