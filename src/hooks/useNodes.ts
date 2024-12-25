@@ -3,11 +3,7 @@ import { FileshipRequestor } from "../api";
 import { useAtom } from "jotai";
 import { nodesAtom } from "../atoms";
 
-const useNodes = (
-  bucketId: string,
-  currentPath: string | null,
-  watch: boolean,
-) => {
+const useNodes = (bucketId: string, currentPath: string | null) => {
   const [nodes, setNodes] = useAtom(nodesAtom);
   const [pathname, setPathname] = useState("/");
   const isFetchingNodesRef = useRef(false);
@@ -28,7 +24,7 @@ const useNodes = (
           )
         : null;
       isFetchingNodesRef.current = false;
-      if (result && mounted && watch) {
+      if (result && mounted) {
         setPathname(result.pathname);
         setNodes(result.children);
       }
@@ -43,7 +39,7 @@ const useNodes = (
       mounted = false;
       isFetchingNodesRef.current = false;
     };
-  }, [bucketId, currentPath, setNodes, watch]);
+  }, [bucketId, currentPath, setNodes]);
 
   return { nodes, pathname, cleanNodes };
 };

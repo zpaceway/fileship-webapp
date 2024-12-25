@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 const buttonVariantColorMapping = {
   primary: "bg-blue-500 hover:bg-blue-600/90 active:bg-blue-600",
-  secondary: "bg-purple-500 hover:bg-purple-600/90 active:bg-purple-600",
+  secondary: "bg-sky-400 hover:bg-sky-500/90 active:bg-sky-500",
   error: "bg-red-500 hover:bg-red-600/90 active:bg-red-600",
   tertiary: "bg-amber-500 hover:bg-amber-600/90 active:bg-amber-600",
 };
@@ -20,7 +20,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     return (
-      <div className="bg-white">
+      <div className="w-full bg-white">
         <button
           disabled={disabled || isLoading}
           ref={ref}

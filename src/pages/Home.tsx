@@ -8,6 +8,8 @@ import { ImCross } from "react-icons/im";
 import { IoIosShareAlt } from "react-icons/io";
 import { z } from "zod";
 import { toast } from "react-toastify";
+import useModal from "../hooks/useModal";
+import ActionForm from "../components/ActionForm";
 
 const shareBucketSchema = z.object({
   email: z.string().email(),
@@ -15,6 +17,7 @@ const shareBucketSchema = z.object({
 
 const HomePage = () => {
   const { user, signOut } = useAuth();
+  const { setModal } = useModal();
   const { buckets, createBucket, deleteBucket, shareBucket, renameBucket } =
     useBuckets();
   const [userTooltipOpen, setUserTooltipOpen] = useState(false);
@@ -33,7 +36,7 @@ const HomePage = () => {
         >
           <div className="flex cursor-pointer items-center gap-2">
             <div className="text-sm text-white">{user.email}</div>
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-800 font-medium text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-400 font-medium text-white">
               {user.email[0].toUpperCase()}
             </div>
           </div>
@@ -90,8 +93,20 @@ const HomePage = () => {
                   <div
                     className="flex h-6 w-6 items-center justify-center border-l border-blue-100 bg-blue-300 hover:bg-blue-600"
                     onClick={() => {
-                      alert(
-                        `This is the list of users that have access to bucket "${bucket.name}":\n\n${bucket.users.join("\n")}`,
+                      setModal(
+                        <ActionForm
+                          title={`${bucket.name} Users`}
+                          onAccept={() => {
+                            setModal(null);
+                          }}
+                          onCancel={() => {
+                            setModal(null);
+                          }}
+                        >
+                          {bucket.users.map((user) => {
+                            return <div>{user}</div>;
+                          })}
+                        </ActionForm>,
                       );
                     }}
                   >

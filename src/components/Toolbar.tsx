@@ -4,8 +4,8 @@ import { HiLink } from "react-icons/hi";
 import { FaPlus } from "react-icons/fa6";
 import { TbReload } from "react-icons/tb";
 import { MdEdit, MdCreateNewFolder, MdDelete } from "react-icons/md";
-import ActionModal from "./ActionModal";
-import SettingsModal from "./SettingsModal";
+import ActionForm from "./ActionForm";
+import SettingsModal from "./SettingsForm";
 import { FileshipRequestor } from "../api";
 import useSettings from "../hooks/useSettings";
 import useNavigation from "../hooks/useNavigation";
@@ -17,6 +17,7 @@ import { useParams } from "react-router";
 import { API_BASE_URL } from "../constants";
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
+import useModal from "../hooks/useModal";
 
 type ToolbarButtonProps = Parameters<typeof Button>[0];
 
@@ -41,15 +42,10 @@ const ToolbarButton = ({
 const Toolbar = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
+  const { setModal } = useModal();
   const { currentPathId: currentPathId, navigate } = useNavigation();
-  const {
-    selectedNodes,
-    editMode,
-    setSelectedNodes,
-    setNodeIdsBeingUpdated,
-    setEditMode,
-    setModal,
-  } = useFileship();
+  const { selectedNodes, setSelectedNodes, setNodeIdsBeingUpdated } =
+    useFileship();
   const [nodes, setNodes] = useAtom(nodesAtom);
 
   if (!bucketId) return <></>;
@@ -57,7 +53,6 @@ const Toolbar = () => {
   return (
     <div className="flex shrink-0 border-r border-blue-300/50">
       <ToolbarButton
-        disabled={editMode}
         onClick={async () => {
           if (!currentPathId) return;
           setNodes([]);
@@ -68,7 +63,6 @@ const Toolbar = () => {
         <FaHome />
       </ToolbarButton>
       <ToolbarButton
-        disabled={editMode}
         onClick={() => {
           setNodes([]);
         }}
@@ -98,7 +92,6 @@ const Toolbar = () => {
         }}
       />
       <ToolbarButton
-        disabled={editMode}
         onClick={() => {
           document.querySelector<HTMLInputElement>("#file-uploader")?.click();
         }}
@@ -106,9 +99,7 @@ const Toolbar = () => {
         <FaPlus />
       </ToolbarButton>
       <ToolbarButton
-        disabled={
-          editMode || selectedNodes.length !== 1 || !selectedNodes[0]?.url
-        }
+        disabled={selectedNodes.length !== 1 || !selectedNodes[0]?.url}
         onClick={() => {
           navigator.clipboard.writeText(
             `${API_BASE_URL}/${selectedNodes[0]?.url}`,
@@ -119,7 +110,6 @@ const Toolbar = () => {
         <HiLink />
       </ToolbarButton>
       <ToolbarButton
-        disabled={editMode}
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
             bucketId,
@@ -132,7 +122,6 @@ const Toolbar = () => {
       </ToolbarButton>
 
       <ToolbarButton
-        disabled={editMode}
         className={
           selectedNodes.length > 0 ? "bg-blue-700 hover:bg-blue-700" : ""
         }
@@ -145,32 +134,41 @@ const Toolbar = () => {
         <IoCheckboxSharp />
       </ToolbarButton>
       <ToolbarButton
-        className={editMode ? "bg-blue-600" : ""}
+        disabled={selectedNodes.length !== 1}
         onClick={() => {
-          setEditMode((state) => !state);
+          const newName = prompt("Enter new name");
+          if (!newName) return;
+
+          FileshipRequestor.updateNode(
+            bucketId,
+            selectedNodes[0].id,
+            newName,
+            currentPathId,
+          );
         }}
       >
         <MdEdit />
       </ToolbarButton>
       <ToolbarButton
         variant="error"
-        disabled={editMode || selectedNodes.length === 0}
         onClick={() => {
           setModal(
-            <ActionModal
+            <ActionForm
               title="Delete"
-              body={`Are you sure you want to delete ${selectedNodes.length} files? This action can not be undone.`}
               onAccept={() => {
                 for (const selectedNode of selectedNodes) {
                   FileshipRequestor.deleteNode(bucketId, selectedNode.id);
                 }
-                setModal(undefined);
+                setModal(null);
                 setSelectedNodes([]);
               }}
               onCancel={() => {
-                setModal(undefined);
+                setModal(null);
               }}
-            />,
+            >
+              Are you sure you want to delete {selectedNodes.length} files? This
+              action can not be undone.
+            </ActionForm>,
           );
         }}
       >
@@ -182,16 +180,15 @@ const Toolbar = () => {
         )}
       </ToolbarButton>
       <ToolbarButton
-        disabled={editMode}
         onClick={() => {
           setModal(
             <SettingsModal
               initialValues={{ connector }}
               onAccept={({ connector }) => {
                 setConnector(connector);
-                setModal(undefined);
+                setModal(null);
               }}
-              onCancel={() => setModal(undefined)}
+              onCancel={() => setModal(null)}
             />,
           );
         }}

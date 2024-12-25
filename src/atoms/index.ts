@@ -8,7 +8,6 @@ export const userAtom = atom(undefined as undefined | null | TUser);
 
 export const nodesAtom = atom<TNode[]>([]);
 export const selectedNodesAtom = atom<TNode[]>([]);
-export const editModeAtom = atom(false);
 export const modalAtom = atom<React.ReactElement>();
 export const nodeIdsBeingUpdatedAtom = atom(new Set<string>());
 export const connectorAtom = atom<TConnector>(

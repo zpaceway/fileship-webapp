@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoDocumentText } from "react-icons/io5";
 import { BiSolidFilePdf } from "react-icons/bi";
 import { SiGoogleslides, SiGooglesheets } from "react-icons/si";
 import { FaFile, FaFolder } from "react-icons/fa";
-import { Debouncer, formatBytes, getAllFilesFromDrop } from "../utils";
+import { formatBytes, getAllFilesFromDrop } from "../utils";
 import { FileshipRequestor } from "../api";
 import useNavigation from "../hooks/useNavigation";
 import useNodes from "../hooks/useNodes";
@@ -20,8 +20,6 @@ const BucketPage = () => {
     useNavigation();
   const {
     selectedNodes,
-    editMode,
-    modal,
     setNodeIdsBeingUpdated,
     nodeIdsBeingUpdated,
     setSelectedNodes,
@@ -29,9 +27,7 @@ const BucketPage = () => {
   const { nodes, pathname, cleanNodes } = useNodes(
     bucketId || "",
     currentPathId,
-    !editMode,
   );
-  const editModeDebouncerRef = useRef(new Debouncer({ delay: 500 }));
 
   useEffect(() => {
     cleanNodes();
@@ -42,7 +38,6 @@ const BucketPage = () => {
 
   return (
     <div className="fixed inset-0 flex h-full w-full flex-col overflow-hidden bg-white">
-      {modal}
       <div className="flex h-full w-full flex-col overflow-hidden">
         <div className="flex h-12 w-full shrink-0 items-center border-b border-b-zinc-200 bg-blue-500">
           <input
@@ -219,37 +214,7 @@ const BucketPage = () => {
                                     )}
                                   </div>
                                   <div className="relative w-full">
-                                    {editMode && (
-                                      <input
-                                        type="text"
-                                        className="absolute inset-0 h-full w-full shrink-0 bg-transparent p-0 outline-none"
-                                        defaultValue={node.name}
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                        }}
-                                        onChange={(e) => {
-                                          editModeDebouncerRef.current.exec(
-                                            () => {
-                                              FileshipRequestor.updateNode(
-                                                bucketId,
-                                                node.id,
-                                                e.target.value,
-                                                currentPathId,
-                                              );
-                                            },
-                                          );
-                                        }}
-                                      />
-                                    )}
-                                    <div
-                                      className={
-                                        editMode
-                                          ? "pointer-events-none opacity-0"
-                                          : "opacity-100"
-                                      }
-                                    >
-                                      {node.name}
-                                    </div>
+                                    {node.name}
                                   </div>
                                 </div>
                                 <div className="flex items-center text-xs">
