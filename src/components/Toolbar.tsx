@@ -18,6 +18,26 @@ import { API_BASE_URL } from "../constants";
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
 
+type ToolbarButtonProps = Parameters<typeof Button>[0];
+
+const ToolbarButton = ({
+  className,
+  children,
+  ...rest
+}: ToolbarButtonProps) => {
+  return (
+    <Button
+      className={twMerge(
+        "flex h-9 w-9 items-center justify-center border-r border-blue-300/50 text-xl",
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </Button>
+  );
+};
+
 const Toolbar = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
@@ -35,10 +55,9 @@ const Toolbar = () => {
   if (!bucketId) return <></>;
 
   return (
-    <div className="flex shrink-0 border-r border-blue-300/50 text-xl">
-      <Button
+    <div className="flex shrink-0 border-r border-blue-300/50">
+      <ToolbarButton
         disabled={editMode}
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           if (!currentPathId) return;
           setNodes([]);
@@ -47,16 +66,15 @@ const Toolbar = () => {
         }}
       >
         <FaHome />
-      </Button>
-      <Button
+      </ToolbarButton>
+      <ToolbarButton
         disabled={editMode}
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setNodes([]);
         }}
       >
         <TbReload />
-      </Button>
+      </ToolbarButton>
       <input
         id="file-uploader"
         type="file"
@@ -79,17 +97,15 @@ const Toolbar = () => {
           });
         }}
       />
-      <Button
+      <ToolbarButton
         disabled={editMode}
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           document.querySelector<HTMLInputElement>("#file-uploader")?.click();
         }}
       >
         <FaPlus />
-      </Button>
-      <Button
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
+      </ToolbarButton>
+      <ToolbarButton
         disabled={
           editMode || selectedNodes.length !== 1 || !selectedNodes[0]?.url
         }
@@ -101,10 +117,9 @@ const Toolbar = () => {
         }}
       >
         <HiLink />
-      </Button>
-      <Button
+      </ToolbarButton>
+      <ToolbarButton
         disabled={editMode}
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
             bucketId,
@@ -114,14 +129,13 @@ const Toolbar = () => {
         }}
       >
         <MdCreateNewFolder />
-      </Button>
+      </ToolbarButton>
 
-      <Button
+      <ToolbarButton
         disabled={editMode}
-        className={twMerge(
-          "flex h-9 w-9 items-center justify-center border-r border-blue-300/50",
-          selectedNodes.length > 0 && "bg-blue-700 hover:bg-blue-700",
-        )}
+        className={
+          selectedNodes.length > 0 ? "bg-blue-700 hover:bg-blue-700" : ""
+        }
         onClick={() => {
           if (selectedNodes.length > 0) return setSelectedNodes([]);
 
@@ -129,21 +143,17 @@ const Toolbar = () => {
         }}
       >
         <IoCheckboxSharp />
-      </Button>
-      <Button
-        className={twMerge(
-          "flex h-9 w-9 items-center justify-center border-r border-blue-300/50",
-          editMode && "bg-blue-600",
-        )}
+      </ToolbarButton>
+      <ToolbarButton
+        className={editMode ? "bg-blue-600" : ""}
         onClick={() => {
           setEditMode((state) => !state);
         }}
       >
         <MdEdit />
-      </Button>
-      <Button
+      </ToolbarButton>
+      <ToolbarButton
         variant="error"
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         disabled={editMode || selectedNodes.length === 0}
         onClick={() => {
           setModal(
@@ -170,10 +180,9 @@ const Toolbar = () => {
             {selectedNodes.length}
           </div>
         )}
-      </Button>
-      <Button
+      </ToolbarButton>
+      <ToolbarButton
         disabled={editMode}
-        className="flex h-9 w-9 items-center justify-center border-r border-blue-300/50"
         onClick={() => {
           setModal(
             <SettingsModal
@@ -188,7 +197,7 @@ const Toolbar = () => {
         }}
       >
         <IoSettings />
-      </Button>
+      </ToolbarButton>
     </div>
   );
 };

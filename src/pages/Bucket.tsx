@@ -9,7 +9,7 @@ import useNavigation from "../hooks/useNavigation";
 import useNodes from "../hooks/useNodes";
 import useFileship from "../hooks/useFileship";
 import Toolbar from "../components/Toolbar";
-import { API_BASE_URL, CONNECTORS } from "../constants";
+import { API_BASE_URL } from "../constants";
 import { useParams } from "react-router";
 import { twMerge } from "tailwind-merge";
 
@@ -124,7 +124,7 @@ const BucketPage = () => {
             <table className="w-full">
               <tbody className="h-full w-full">
                 {prevPathId !== undefined && (
-                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-yellow-50">
+                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-blue-50">
                     <td className="h-12 w-10"></td>
                     <td
                       className="h-12"
@@ -149,7 +149,7 @@ const BucketPage = () => {
                   return (
                     <tr
                       key={`${currentPathId}-${node.id}`}
-                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-yellow-50 ${isSelected ? "bg-yellow-50" : index % 2 === 0 ? "bg-blue-50" : "bg-white"}`}
+                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-blue-50 ${isSelected ? "bg-blue-50" : index % 2 === 0 ? "bg-blue-50/30" : "bg-white"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {
@@ -191,33 +191,33 @@ const BucketPage = () => {
 
                       <td className="h-12 w-full pr-4">
                         <div className="flex h-full w-full items-center gap-1">
-                          <div>
-                            {node.children ? (
-                              <FaFolder className="text-yellow-500" />
-                            ) : ["docx", "doc"].includes(
-                                node.name.split(".").slice(-1)[0]!,
-                              ) ? (
-                              <IoDocumentText className="text-blue-500" />
-                            ) : ["xlsx", "xls"].includes(
-                                node.name.split(".").slice(-1)[0]!,
-                              ) ? (
-                              <SiGooglesheets className="text-emerald-500" />
-                            ) : ["pdf"].includes(
-                                node.name.split(".").slice(-1)[0]!,
-                              ) ? (
-                              <BiSolidFilePdf className="text-rose-500" />
-                            ) : ["ppt", "pptx"].includes(
-                                node.name.split(".").slice(-1)[0]!,
-                              ) ? (
-                              <SiGoogleslides className="text-orange-400" />
-                            ) : (
-                              <FaFile className="text-zinc-300" />
-                            )}
-                          </div>
                           <div className="flex h-full w-full">
                             <div className="flex w-full items-center">
                               <div className="flex flex-col">
-                                <div className="text-sm text-zinc-900">
+                                <div className="flex items-center gap-1 text-sm text-zinc-900">
+                                  <div>
+                                    {node.children ? (
+                                      <FaFolder className="text-yellow-500" />
+                                    ) : ["docx", "doc"].includes(
+                                        node.name.split(".").slice(-1)[0]!,
+                                      ) ? (
+                                      <IoDocumentText className="text-blue-500" />
+                                    ) : ["xlsx", "xls"].includes(
+                                        node.name.split(".").slice(-1)[0]!,
+                                      ) ? (
+                                      <SiGooglesheets className="text-emerald-500" />
+                                    ) : ["pdf"].includes(
+                                        node.name.split(".").slice(-1)[0]!,
+                                      ) ? (
+                                      <BiSolidFilePdf className="text-rose-500" />
+                                    ) : ["ppt", "pptx"].includes(
+                                        node.name.split(".").slice(-1)[0]!,
+                                      ) ? (
+                                      <SiGoogleslides className="text-orange-400" />
+                                    ) : (
+                                      <FaFile className="text-zinc-300" />
+                                    )}
+                                  </div>
                                   <div className="relative w-full">
                                     {editMode && (
                                       <input
@@ -277,6 +277,7 @@ const BucketPage = () => {
                                       </span>
                                     </span>
                                   )}
+                                  <span className="inline-block w-2"></span>
                                   {[
                                     ...new Set(
                                       node.chunks?.map((chunk) => {
@@ -284,17 +285,16 @@ const BucketPage = () => {
                                       }),
                                     ),
                                   ].map((connector) => {
-                                    const connectorIcon = CONNECTORS.find(
-                                      (_connector) =>
-                                        _connector.key === connector,
-                                    )?.icon;
+                                    if (!connector) return null;
 
                                     return (
                                       <div
-                                        className="ml-2 inline-block"
+                                        className="mr-0.5 inline-block"
                                         key={`${node.id}-connector-${connector}`}
                                       >
-                                        {connectorIcon}
+                                        <div className="flex h-3.5 w-3.5 items-center justify-center bg-zinc-200 text-xs font-bold text-white">
+                                          {connector[0].toUpperCase()}
+                                        </div>
                                       </div>
                                     );
                                   })}
