@@ -151,6 +151,7 @@ const Toolbar = () => {
       </ToolbarButton>
       <ToolbarButton
         variant="error"
+        disabled={selectedNodes.length === 0}
         onClick={() => {
           setModal(
             <ActionForm
