@@ -11,10 +11,11 @@ function App() {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user !== null || location.pathname === "/auth") {
-      return;
+    if (user === null && location.pathname !== "/auth") {
+      navigate("/auth");
+    } else if (user !== null && location.pathname === "/auth") {
+      navigate("/");
     }
-    navigate("/auth");
   }, [user, location.pathname, navigate]);
 
   if (user === undefined || (user === null && location.pathname !== "/auth")) {

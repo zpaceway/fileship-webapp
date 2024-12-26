@@ -28,7 +28,7 @@ const useNodes = (bucketId: string, currentPath: string | null) => {
         setPathname(result.pathname);
         setNodes(result.children);
       }
-      await new Promise((res) => setTimeout(res, 250));
+      await new Promise((res) => setTimeout(res, 500));
       if (!mounted) return;
       await wrapped();
     };

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TBucket } from "../types";
 import { fileshipFetch } from "../api";
 
 const useBuckets = () => {
   const [buckets, setBuckets] = useState<TBucket[]>([]);
+  const isFetchingBucketsRef = useRef(false);
 
   const refreshBuckets = useCallback(async () => {
     fileshipFetch("/buckets/")
@@ -19,90 +20,92 @@ const useBuckets = () => {
       });
   }, []);
 
-  const createBucket = useCallback(
-    async (name: string) => {
-      fileshipFetch("/buckets/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-        }),
+  const createBucket = useCallback(async (name: string) => {
+    fileshipFetch("/buckets/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+      }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create bucket");
+        }
       })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error("Failed to create bucket");
-          }
-          refreshBuckets();
-        })
-        .catch(() => {});
-    },
-    [refreshBuckets],
-  );
+      .catch(() => {});
+  }, []);
 
-  const deleteBucket = useCallback(
-    async (bucketId: string) => {
-      fileshipFetch(`/buckets/${bucketId}/`, {
-        method: "DELETE",
+  const deleteBucket = useCallback(async (bucketId: string) => {
+    fileshipFetch(`/buckets/${bucketId}/`, {
+      method: "DELETE",
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create bucket");
+        }
       })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error("Failed to create bucket");
-          }
-          refreshBuckets();
-        })
-        .catch(() => {});
-    },
-    [refreshBuckets],
-  );
+      .catch(() => {});
+  }, []);
 
-  const shareBucket = useCallback(
-    async (bucketId: string, email: string) => {
-      fileshipFetch(`/buckets/${bucketId}/share/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
+  const shareBucket = useCallback(async (bucketId: string, email: string) => {
+    fileshipFetch(`/buckets/${bucketId}/share/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create bucket");
+        }
       })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error("Failed to create bucket");
-          }
-          refreshBuckets();
-        })
-        .catch(() => {});
-    },
-    [refreshBuckets],
-  );
+      .catch(() => {});
+  }, []);
 
-  const renameBucket = useCallback(
-    async (bucketId: string, name: string) => {
-      fileshipFetch(`/buckets/${bucketId}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-        }),
+  const renameBucket = useCallback(async (bucketId: string, name: string) => {
+    fileshipFetch(`/buckets/${bucketId}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+      }),
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create bucket");
+        }
       })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error("Failed to create bucket");
-          }
-          refreshBuckets();
-        })
-        .catch(() => {});
-    },
-    [refreshBuckets],
-  );
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
-    refreshBuckets();
+    let mounted = true;
+
+    const wrapped = async () => {
+      if (!mounted) return;
+      if (isFetchingBucketsRef.current) return;
+      isFetchingBucketsRef.current = true;
+      if (mounted) await refreshBuckets().catch(() => null);
+      isFetchingBucketsRef.current = false;
+      await new Promise((res) => setTimeout(res, 500));
+      if (!mounted) return;
+      await wrapped();
+    };
+
+    wrapped();
+
+    return () => {
+      mounted = false;
+      isFetchingBucketsRef.current = false;
+    };
   }, [refreshBuckets]);
 
   return {
