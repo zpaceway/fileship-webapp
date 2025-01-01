@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../constants";
 import { Settings } from "../enums";
 import { TConnector, TNode } from "../types";
-import { generateShortUUID as generateRandomUUID } from "../utils";
+import { generateRandomUUID } from "../utils";
 
 const unprotectedRoutes = [
   "/users/token/refresh/",

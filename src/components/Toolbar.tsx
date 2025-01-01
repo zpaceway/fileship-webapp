@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 import { TbReload } from "react-icons/tb";
 import { MdEdit, MdCreateNewFolder, MdDelete } from "react-icons/md";
 import ActionForm from "./ActionForm";
-import SettingsModal from "./SettingsForm";
+import SettingsForm from "./SettingsForm";
 import { FileshipRequestor } from "../api";
 import useSettings from "../hooks/useSettings";
 import useNavigation from "../hooks/useNavigation";
@@ -18,6 +18,7 @@ import { API_BASE_URL } from "../constants";
 import Button from "./Button";
 import { twMerge } from "tailwind-merge";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 type ToolbarButtonProps = Parameters<typeof Button>[0];
 
@@ -40,6 +41,7 @@ const ToolbarButton = ({
 };
 
 const Toolbar = () => {
+  const { user } = useAuth();
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
   const { setModal } = useModal();
@@ -48,7 +50,7 @@ const Toolbar = () => {
     useFileship();
   const [nodes, setNodes] = useAtom(nodesAtom);
 
-  if (!bucketId) return <></>;
+  if (!bucketId || !user) return <></>;
 
   return (
     <div className="flex shrink-0 border-r border-blue-300/50">
@@ -175,7 +177,7 @@ const Toolbar = () => {
       >
         <MdDelete />
         {selectedNodes.length > 0 && (
-          <div className="absolute right-0.5 bottom-0 flex text-[9px] font-bold">
+          <div className="absolute bottom-0 right-0.5 flex text-[9px] font-bold">
             {selectedNodes.length}
           </div>
         )}
@@ -183,8 +185,8 @@ const Toolbar = () => {
       <ToolbarButton
         onClick={() => {
           setModal(
-            <SettingsModal
-              initialValues={{ connector }}
+            <SettingsForm
+              initialValues={{ connector, apiKey: user.apiKey }}
               onAccept={({ connector }) => {
                 setConnector(connector);
                 setModal(null);

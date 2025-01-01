@@ -21,7 +21,7 @@ export const formatBytes = (bytes: number) => {
   return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
 };
 
-export const generateShortUUID = () => {
+export const generateRandomUUID = () => {
   return uuidv4().replace(/-/g, "") + uuidv4().replace(/-/g, "");
 };
 

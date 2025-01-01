@@ -26,6 +26,7 @@ export type TUser = {
   lastName: string;
   createdAt: string;
   updatedAt: string;
+  apiKey: string;
 };
 
 export type TBucket = {
