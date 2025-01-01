@@ -11,6 +11,7 @@ import Toolbar from "../components/Toolbar";
 import { API_BASE_URL } from "../constants";
 import { useParams } from "react-router";
 import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
 
 const BucketPage = () => {
   const { bucketId = "" } = useParams<{ bucketId: string }>();
@@ -214,7 +215,10 @@ const BucketPage = () => {
                                 </div>
                                 <div className="flex items-center text-xs">
                                   <span className="text-zinc-400">
-                                    {new Date(node.updatedAt).toLocaleString()}
+                                    {format(
+                                      new Date(node.createdAt),
+                                      "dd/MM/yyyy hh:mm a",
+                                    )}
                                   </span>
                                   <span className="inline-block w-2"></span>
                                   <span className="text-zinc-500">
