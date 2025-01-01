@@ -3,13 +3,13 @@ import { FileshipRequestor } from "../api";
 import { useAtom } from "jotai";
 import { nodesAtom } from "../atoms";
 
-const useNodes = (bucketId: string, currentPath: string | null) => {
+const useNodes = (bucketId: string, parentId: string | null) => {
   const [nodes, setNodes] = useAtom(nodesAtom);
   const [pathname, setPathname] = useState("/");
   const isFetchingNodesRef = useRef(false);
   const cleanNodes = useCallback(() => {
     setNodes([]);
-  }, [setNodes]);
+  }, [setNodes, parentId]);
 
   useEffect(() => {
     let mounted = true;
@@ -19,9 +19,7 @@ const useNodes = (bucketId: string, currentPath: string | null) => {
       if (isFetchingNodesRef.current) return;
       isFetchingNodesRef.current = true;
       const result = mounted
-        ? await FileshipRequestor.fetchNodes(bucketId, currentPath).catch(
-            () => null,
-          )
+        ? await FileshipRequestor.fetchNodes(bucketId, parentId)
         : null;
       isFetchingNodesRef.current = false;
       if (result && mounted) {
@@ -39,7 +37,7 @@ const useNodes = (bucketId: string, currentPath: string | null) => {
       mounted = false;
       isFetchingNodesRef.current = false;
     };
-  }, [bucketId, currentPath, setNodes]);
+  }, [bucketId, parentId, setNodes]);
 
   return { nodes, pathname, cleanNodes };
 };

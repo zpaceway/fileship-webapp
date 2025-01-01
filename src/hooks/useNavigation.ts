@@ -3,30 +3,19 @@ import { useSearchParams } from "react-router";
 
 const useNavigation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pathIdsString = useMemo(() => {
-    return searchParams.get("pathIds") || "";
+  const parentId = useMemo(() => {
+    return searchParams.get("parentId");
   }, [searchParams]);
-  const pathsIds = useMemo(() => {
-    return pathIdsString.split("/").filter(Boolean);
-  }, [pathIdsString]);
-  const currentPathId = useMemo(() => {
-    return pathsIds.length >= 1 ? pathsIds.slice(-1)[0]! : null;
-  }, [pathsIds]);
-  const prevPathId = useMemo(() => {
-    return pathsIds.length > 1
-      ? pathsIds.slice(-2)[0]!
-      : currentPathId
-        ? null
-        : undefined;
-  }, [currentPathId, pathsIds]);
 
   return {
-    currentPathId,
-    prevPathId,
-    pathIdsString,
-    navigate: (path: string) => {
+    parentId,
+    navigate: (parentId: string | null) => {
+      if (!parentId) {
+        setSearchParams({});
+        return;
+      }
       const urlSearchParams = new URLSearchParams({
-        pathIds: path,
+        parentId: parentId,
       });
       setSearchParams(urlSearchParams);
     },

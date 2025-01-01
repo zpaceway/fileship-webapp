@@ -252,29 +252,41 @@ export class FileshipRequestor {
     }).catch((error) => console.error(error));
   }
 
-  static async fetchNodes(bucketId: string, currentPath: string | null) {
-    const currentLastChunk = currentPath ? `${currentPath}/` : "";
-
-    if (this.nodesCache[currentLastChunk]) {
-      const cached = this.nodesCache[currentLastChunk];
-      delete this.nodesCache[currentLastChunk];
+  static async fetchNodes(bucketId: string, parentId: string | null) {
+    if (this.nodesCache[parentId || ""]) {
+      const cached = this.nodesCache[parentId || ""];
+      delete this.nodesCache[parentId || ""];
       return cached;
     }
 
     const currentPathResult: {
       result: { pathname: string; children: TNode[] } | null;
-    } = await fileshipFetch(`/buckets/${bucketId}/nodes/${currentLastChunk}`, {
-      signal: AbortSignal.timeout(this.defaultRequestTimeoutInMilliseconds),
-    })
-      .then(async (res) =>
-        res.status === 200 ? await res.json() : { result: null },
-      )
+    } = await fileshipFetch(
+      `/buckets/${bucketId}/nodes/${parentId ? parentId + "/" : ""}`,
+      {
+        signal: AbortSignal.timeout(this.defaultRequestTimeoutInMilliseconds),
+      },
+    )
+      .then(async (res) => {
+        const status = res.status;
+
+        if (status !== 404) {
+          return res.status === 200 ? await res.json() : { result: null };
+        }
+
+        const error = await res.json();
+        if (error.detail === "Node not found")
+          window.location.href = window.location.href.split("?")[0];
+        if (error.detail === "Bucket not found") window.close();
+
+        return { result: null };
+      })
       .catch(() => ({ result: null }));
 
     const { result: currentResult } = currentPathResult;
 
     if (currentResult) {
-      this.nodesCache[currentLastChunk] = currentResult;
+      this.nodesCache[parentId || ""] = currentResult;
     }
 
     return currentResult;

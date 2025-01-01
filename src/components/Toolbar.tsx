@@ -45,7 +45,7 @@ const Toolbar = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
   const { setModal } = useModal();
-  const { currentPathId: currentPathId, navigate } = useNavigation();
+  const { parentId, navigate } = useNavigation();
   const { selectedNodes, setSelectedNodes, setNodeIdsBeingUpdated } =
     useFileship();
   const [nodes, setNodes] = useAtom(nodesAtom);
@@ -56,10 +56,10 @@ const Toolbar = () => {
     <div className="flex shrink-0 border-r border-blue-300/50">
       <ToolbarButton
         onClick={async () => {
-          if (!currentPathId) return;
+          if (!parentId) return;
           setNodes([]);
           setSelectedNodes([]);
-          navigate("/");
+          navigate(null);
         }}
       >
         <FaHome />
@@ -84,7 +84,7 @@ const Toolbar = () => {
             const nodeId = await FileshipRequestor.uploadFile(
               bucketId,
               file,
-              currentPathId,
+              parentId,
             );
             setNodeIdsBeingUpdated((current) => {
               current.add(nodeId);
@@ -115,7 +115,7 @@ const Toolbar = () => {
         onClick={async () => {
           const newFolder = await FileshipRequestor.newFolder(
             bucketId,
-            currentPathId,
+            parentId,
           );
           setSelectedNodes([newFolder]);
         }}
@@ -138,14 +138,17 @@ const Toolbar = () => {
       <ToolbarButton
         disabled={selectedNodes.length !== 1}
         onClick={() => {
-          const newName = prompt("Enter new name");
+          const newName = prompt(
+            "Enter node's new name",
+            selectedNodes[0].name,
+          );
           if (!newName) return;
 
           FileshipRequestor.updateNode(
             bucketId,
             selectedNodes[0].id,
             newName,
-            currentPathId,
+            parentId,
           );
         }}
       >

@@ -43,7 +43,7 @@ const HomePage = () => {
           {userTooltipOpen && (
             <>
               <div className="fixed inset-0 z-40"></div>
-              <div className="absolute top-[calc(100%_+_4px)] right-0 z-50 border border-zinc-200 text-sm shadow">
+              <div className="absolute right-0 top-[calc(100%_+_4px)] z-50 border border-zinc-200 text-sm shadow">
                 <button
                   className="cursor-pointer bg-white p-2"
                   onClick={(e) => {
@@ -63,7 +63,7 @@ const HomePage = () => {
         <div className="">
           <Button
             onClick={() => {
-              const bucketName = prompt("New Bucket Name", "");
+              const bucketName = prompt("Enter bucket's name");
               if (!bucketName) return;
               createBucket(bucketName);
             }}
@@ -73,7 +73,7 @@ const HomePage = () => {
         </div>
       </div>
       {buckets.length === 0 ? (
-        <div className="flex h-full w-full items-center justify-center text-zinc-600 select-none">
+        <div className="flex h-full w-full select-none items-center justify-center text-zinc-600">
           You have no buckets. Create one to get started.
         </div>
       ) : (
@@ -116,7 +116,8 @@ const HomePage = () => {
                     className="flex h-6 w-6 items-center justify-center border-l border-blue-100 bg-blue-300 hover:bg-blue-600"
                     onClick={() => {
                       const bucketName = prompt(
-                        `What would you like to rename bucket "${bucket.name}" to?`,
+                        "Enter bucket's new name",
+                        bucket.name,
                       );
                       if (!bucketName) return;
                       renameBucket(bucket.id, bucketName)
