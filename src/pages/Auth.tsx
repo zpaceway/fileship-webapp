@@ -56,7 +56,7 @@ const AuthPage = () => {
   const onSubmitValidateOTPForm = async (data: ValidateOTPFormSchema) => {
     try {
       await validateOTP(data.email, data.otp);
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       toast.error(String(error));
     }
@@ -75,8 +75,7 @@ const AuthPage = () => {
         >
           <div className="flex flex-col gap-2">
             <div className="text-blue-500">
-              <span className="text-3xl font-bold">F</span>
-              <span className="text-2xl">ileship</span>
+              <span className="text-3xl font-bold">Fileship</span>
             </div>
             <div className="text-sm text-zinc-600">
               Ship your data anywhere. A free and open source solution to store

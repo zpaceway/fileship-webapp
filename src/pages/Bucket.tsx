@@ -5,7 +5,6 @@ import { SiGoogleslides, SiGooglesheets } from "react-icons/si";
 import { FaFile, FaFolder } from "react-icons/fa";
 import { formatBytes, getAllFilesFromDrop } from "../utils";
 import { FileshipRequestor } from "../api";
-import useNavigation from "../hooks/useNavigation";
 import useNodes from "../hooks/useNodes";
 import useFileship from "../hooks/useFileship";
 import Toolbar from "../components/Toolbar";
@@ -16,12 +15,13 @@ import { twMerge } from "tailwind-merge";
 const BucketPage = () => {
   const { bucketId = "" } = useParams<{ bucketId: string }>();
   const [isHoveringOver, setIsHoveringOver] = useState(false);
-  const { parentId, navigate } = useNavigation();
   const {
+    parentId,
     selectedNodes,
-    setNodeIdsBeingUpdated,
     nodeIdsBeingUpdated,
+    setParentId,
     setSelectedNodes,
+    setNodeIdsBeingUpdated,
   } = useFileship();
   const { nodes, pathname, cleanNodes } = useNodes(bucketId, parentId);
 
@@ -115,7 +115,7 @@ const BucketPage = () => {
             <table className="w-full">
               <tbody className="h-full w-full">
                 {parentId && (
-                  <tr className="text-nowrap border-b border-b-zinc-200 bg-white text-xs text-zinc-900 transition-all hover:bg-blue-50">
+                  <tr className="border-b border-b-zinc-200 bg-white text-xs text-nowrap text-zinc-900 transition-all hover:bg-blue-50">
                     <td className="h-12 w-10"></td>
                     <td
                       className="h-12"
@@ -125,7 +125,7 @@ const BucketPage = () => {
                         }
                       }}
                     >
-                      <div className="flex h-12 w-full shrink-0 grow-0 select-none items-center gap-1">
+                      <div className="flex h-12 w-full shrink-0 grow-0 items-center gap-1 select-none">
                         <FaFolder className="text-yellow-500" />
                         <div>..</div>
                       </div>
@@ -140,7 +140,7 @@ const BucketPage = () => {
                   return (
                     <tr
                       key={`${parentId}-${node.id}`}
-                      className={`h-12 select-none text-nowrap border-b border-b-zinc-200 transition-all hover:bg-blue-50 ${isSelected ? "bg-blue-50" : index % 2 === 0 ? "bg-blue-50/30" : "bg-white"}`}
+                      className={`h-12 border-b border-b-zinc-200 text-nowrap transition-all select-none hover:bg-blue-50 ${isSelected ? "bg-blue-50" : index % 2 === 0 ? "bg-blue-50/30" : "bg-white"}`}
                       onClick={async (e) => {
                         if (e.detail === 2) {
                           if (node.url) {
@@ -149,7 +149,7 @@ const BucketPage = () => {
                               "_blank",
                             );
                           }
-                          navigate(node.id);
+                          setParentId(node.id);
 
                           return;
                         }

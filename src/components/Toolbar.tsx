@@ -8,7 +8,6 @@ import ActionForm from "./ActionForm";
 import SettingsForm from "./SettingsForm";
 import { FileshipRequestor } from "../api";
 import useSettings from "../hooks/useSettings";
-import useNavigation from "../hooks/useNavigation";
 import useFileship from "../hooks/useFileship";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
@@ -45,9 +44,13 @@ const Toolbar = () => {
   const { bucketId } = useParams<{ bucketId: string }>();
   const { connector, setConnector } = useSettings();
   const { setModal } = useModal();
-  const { parentId, navigate } = useNavigation();
-  const { selectedNodes, setSelectedNodes, setNodeIdsBeingUpdated } =
-    useFileship();
+  const {
+    parentId,
+    setParentId,
+    selectedNodes,
+    setSelectedNodes,
+    setNodeIdsBeingUpdated,
+  } = useFileship();
   const [nodes, setNodes] = useAtom(nodesAtom);
 
   if (!bucketId || !user) return <></>;
@@ -59,7 +62,7 @@ const Toolbar = () => {
           if (!parentId) return;
           setNodes([]);
           setSelectedNodes([]);
-          navigate(null);
+          setParentId(null);
         }}
       >
         <FaHome />
@@ -180,7 +183,7 @@ const Toolbar = () => {
       >
         <MdDelete />
         {selectedNodes.length > 0 && (
-          <div className="absolute bottom-0 right-0.5 flex text-[9px] font-bold">
+          <div className="absolute right-0.5 bottom-0 flex text-[9px] font-bold">
             {selectedNodes.length}
           </div>
         )}

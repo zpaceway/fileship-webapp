@@ -4,6 +4,8 @@ import LoadingScreen from "./components/LoadingScreen";
 import { useEffect } from "react";
 import useModal from "./hooks/useModal";
 
+const unprotectedPaths = new Set(["", "/", "/auth"]);
+
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -11,14 +13,14 @@ function App() {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user === null && location.pathname !== "/auth") {
+    if (user === null && !unprotectedPaths.has(location.pathname)) {
       navigate("/auth");
-    } else if (user !== null && location.pathname === "/auth") {
-      navigate("/");
+    } else if (user !== null && unprotectedPaths.has(location.pathname)) {
+      navigate("/dashboard");
     }
   }, [user, location.pathname, navigate]);
 
-  if (user === undefined || (user === null && location.pathname !== "/auth")) {
+  if (user === undefined) {
     return <LoadingScreen />;
   }
 

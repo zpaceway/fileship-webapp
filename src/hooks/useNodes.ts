@@ -9,6 +9,7 @@ const useNodes = (bucketId: string, parentId: string | null) => {
   const isFetchingNodesRef = useRef(false);
   const cleanNodes = useCallback(() => {
     setNodes([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setNodes, parentId]);
 
   useEffect(() => {
