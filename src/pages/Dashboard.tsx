@@ -27,7 +27,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-blue-50">
+    <div className="fixed inset-0 flex flex-col bg-white">
       <div className="flex h-12 w-full shrink-0 grow-0 items-center justify-between border-b border-b-zinc-200 bg-blue-500 px-4">
         <div></div>
         <div
@@ -43,7 +43,7 @@ const DashboardPage = () => {
           {userTooltipOpen && (
             <>
               <div className="fixed inset-0 z-40"></div>
-              <div className="absolute top-[calc(100%_+_4px)] right-0 z-50 border border-zinc-200 text-sm shadow">
+              <div className="absolute top-[calc(100%_+_4px)] right-0 z-50 border border-zinc-200 text-sm">
                 <button
                   className="cursor-pointer bg-white p-2"
                   onClick={(e) => {
@@ -87,7 +87,7 @@ const DashboardPage = () => {
             {buckets.map((bucket) => (
               <div
                 key={bucket.id}
-                className="flex h-full cursor-pointer flex-col overflow-hidden border border-zinc-200 bg-white text-white shadow"
+                className="flex h-full cursor-pointer flex-col overflow-hidden border border-zinc-200 bg-white text-white"
               >
                 <div className="flex items-center justify-end bg-blue-300 text-white">
                   <div
