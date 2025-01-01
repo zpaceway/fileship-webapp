@@ -9,11 +9,11 @@ const useNodes = (bucketId: string, parentId: string | null) => {
   const isFetchingNodesRef = useRef(false);
   const cleanNodes = useCallback(() => {
     setNodes([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setNodes, parentId]);
+  }, [setNodes]);
 
   useEffect(() => {
     let mounted = true;
+    cleanNodes();
 
     const wrapped = async () => {
       if (!mounted) return;
@@ -38,7 +38,7 @@ const useNodes = (bucketId: string, parentId: string | null) => {
       mounted = false;
       isFetchingNodesRef.current = false;
     };
-  }, [bucketId, parentId, setNodes]);
+  }, [bucketId, parentId, cleanNodes, setNodes]);
 
   return { nodes, pathname, cleanNodes };
 };

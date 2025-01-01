@@ -11,7 +11,9 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="" element={<HomePage />} />
-        <Route path="auth" element={<AuthPage />} />
+        <Route path="auth" element={<App />}>
+          <Route path="" element={<AuthPage />} />
+        </Route>
         <Route path="dashboard" element={<App />}>
           <Route path="" element={<DashboardPage />}></Route>
           <Route path="buckets/:bucketId" element={<BucketPage />} />
