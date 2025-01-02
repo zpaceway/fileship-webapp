@@ -24,7 +24,7 @@ const HomePage = () => {
           </a>
           <div className="border-r border-white"></div>
           <a
-            href="https://github.com/zpaceway/fileship-backend"
+            href="https://github.com/zpaceway/fileship-srv"
             className="flex items-center gap-2 px-4 py-2 text-white"
           >
             <FaGithub />
