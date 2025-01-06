@@ -10,7 +10,7 @@ const unprotectedRoutes = [
 ];
 
 export const fileshipFetch = async (path: string, init?: RequestInit) => {
-  const url = `${API_BASE_URL}${path}`;
+  const url = `${API_BASE_URL}/api${path}`;
   const headers: Record<string, string> =
     (init?.headers as Record<string, string>) || {};
 
@@ -32,7 +32,7 @@ export const fileshipFetch = async (path: string, init?: RequestInit) => {
         throw new Error("No refresh token found");
       }
 
-      const response = await fetch(`${API_BASE_URL}/users/token/refresh/`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/token/refresh/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
